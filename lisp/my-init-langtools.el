@@ -98,11 +98,15 @@
           eglot-sync-connect 0)
 
     :config
+    (fset #'jsonrpc--log-event #'ignore)  ; massive perf boost---don't log every event
     (add-to-list 'eglot-server-programs
                  '(python-ts-mode . ("pyright-langserver" "--stdio")))
 
     (add-to-list 'eglot-server-programs
                  '(sql-mode . ("sqls")))
+
+    (add-to-list 'eglot-server-programs
+                 '(haskell-mode . ("haskell-language-server" "--lsp")))
 
     (add-to-list 'eglot-server-programs '((org-mode markdown-mode) "efm-langserver"))
 

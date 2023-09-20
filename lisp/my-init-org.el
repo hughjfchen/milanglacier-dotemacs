@@ -3,15 +3,15 @@
 (straight-use-package '(org :type built-in))
 (straight-use-package 'evil-org)
 (straight-use-package 'org-appear)
-(straight-use-package 'jupyter)
+;;(straight-use-package 'jupyter)
 (straight-use-package 'org-re-reveal)
 (straight-use-package 'ox-clip)
 (straight-use-package 'org-download)
 
-(defvar my$jupyter-want-integration t
-    "Enable jupyter integration. which entails configuring it as an
-org-babel backend and allowing for direct editing of Jupyter notebooks
-within Emacs.")
+;;(defvar my$jupyter-want-integration t
+;;    "Enable jupyter integration. which entails configuring it as an
+;;org-babel backend and allowing for direct editing of Jupyter notebooks
+;;within Emacs.")
 
 (use-package org
     :init
@@ -30,7 +30,7 @@ within Emacs.")
         "c" #'org-capture
         "o" #'org-clock-goto)
 
-    (setq org-directory "~/Desktop/orgmode"
+    (setq org-directory "~/org"
           org-archive-location (expand-file-name "%s.archive.org::" (concat org-directory "/archive"))
           org-id-locations-file (file-name-concat org-directory ".orgids")
           org-id-locations-file-relative t
@@ -434,14 +434,14 @@ within Emacs.")
                              (shell . t)
                              (python . t))))
 
-        (when my$jupyter-want-integration
-            (push '(jupyter . t) org-babel-langs))
+        ;;(when my$jupyter-want-integration
+        ;;    (push '(jupyter . t) org-babel-langs))
 
         (org-babel-do-load-languages 'org-babel-load-languages
                                      org-babel-langs)
 
-        (when my$jupyter-want-integration
-            (setf (alist-get "jupyter-python" org-src-lang-modes) 'python-ts))
+        ;;(when my$jupyter-want-integration
+        ;;    (setf (alist-get "jupyter-python" org-src-lang-modes) 'python-ts))
         )
 
     ;; HACK: when you want to use org-babel to execute a code block,
@@ -450,9 +450,9 @@ within Emacs.")
     (defalias #'org-babel-execute:r #'org-babel-execute:R)
     (my/org-babel-lsp-setup "R")
     (my/org-babel-lsp-setup "python")
-    (when my$jupyter-want-integration
-        (my/org-babel-lsp-setup "jupyter-R")
-        (my/org-babel-lsp-setup "jupyter-python"))
+    ;;(when my$jupyter-want-integration
+    ;;    (my/org-babel-lsp-setup "jupyter-R")
+    ;;    (my/org-babel-lsp-setup "jupyter-python"))
 
     ;; TODO: update `org-babel-python-command' in accordance to `python-shell-interpreter'
     ;; and `python-shell-interpreter-args'
@@ -524,12 +524,12 @@ within Emacs.")
     (when (display-graphic-p)
         (setq org-appear-autosubmarkers t)))
 
-(use-package ob-jupyter
-    :when my$jupyter-want-integration
-    :init
-    (push 'zmq my$load-incrementally-packages)
-    :config
-    (delq :text/html jupyter-org-mime-types))
+;;(use-package ob-jupyter
+;;    :when my$jupyter-want-integration
+;;    :init
+;;    (push 'zmq my$load-incrementally-packages)
+;;    :config
+;;    (delq :text/html jupyter-org-mime-types))
 
 (use-package org-re-reveal
     :init

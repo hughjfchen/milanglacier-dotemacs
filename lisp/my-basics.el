@@ -1,7 +1,7 @@
 ;;; my-basics.el -*- lexical-binding: t; -*-
 
-(setq user-full-name "Milan Glacier")
-(setq user-mail-address "me@milanglacier.com")
+(setq user-full-name "Hugh JF Chen")
+(setq user-mail-address "hugh.jf.chen@gmail.com")
 
 (setq mac-right-option-modifier 'meta)
 (setq mac-option-modifier 'meta)

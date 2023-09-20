@@ -17,7 +17,7 @@
         (setq my$selected-theme theme)
         (load-theme theme t)))
 
-(defvar my$day-to-night-o-clock 23 "The time to switch from day to night themes")
+(defvar my$day-to-night-o-clock 19 "The time to switch from day to night themes")
 (defvar my$night-to-day-o-clock 7 "The time to switch from night to day themes")
 
 (defun my:calculate-time-to-switch-theme (transit-direction)

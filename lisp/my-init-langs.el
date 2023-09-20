@@ -9,6 +9,12 @@
 ;; sql
 (straight-use-package 'sql-indent)
 
+;; haskell
+(straight-use-package 'haskell-mode)
+
+;; nix
+(straight-use-package 'nix-mode)
+
 (use-package ess
     :init
     (setq comint-scroll-to-bottom-on-input t
@@ -180,6 +186,15 @@
     :config
     (add-hook 'sql-mode-hook (my/setq-locally tab-width 4))
     (add-hook 'sql-mode-hook #'eglot-ensure))
+
+(use-package haskell-mode
+    :init
+    (when (executable-find "haskell-language-server")
+        (add-hook 'haskell-mode-hook 'eglot-ensure)))
+
+(use-package nix-mode
+    :init
+    (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode)))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
