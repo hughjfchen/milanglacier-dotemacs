@@ -20,6 +20,8 @@
 (push my/autoloads-dir load-path)
 (push my/site-lisp-dir load-path)
 (setq custom-file (file-name-concat user-emacs-directory "custom.el"))
+(when (file-exists-p custom-file)
+  (load custom-file))
 
 (setq use-package-expand-minimally t
       ;; use-package is a macro. Don't let the macro expands into
