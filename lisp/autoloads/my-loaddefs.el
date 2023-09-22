@@ -320,6 +320,7 @@ open vterm at project root, if no root is found, open at the default-directory" 
 If a project root is found, return it. Otherwise return `default-directory'.")
 (autoload 'my/ibuffer-vc-setup "my-misc-autoloads")
 (autoload 'my:dired-subtree-toggle-nerd-icons "my-misc-autoloads")
+(register-definition-prefixes "my-misc-autoloads" '("my:dired-subtree-add-nerd-icons"))
 
 
 ;;; Generated autoloads from my-org-autoloads.el

@@ -11,6 +11,8 @@
 
 ;; haskell
 (straight-use-package 'haskell-mode)
+(straight-use-package '(ghcid-mode :host github :repo "hughjfchen/ghcid-mode"
+                                :files (:defaults "*.el")))
 
 ;; nix
 (straight-use-package 'nix-mode)
@@ -187,10 +189,13 @@
     (add-hook 'sql-mode-hook (my/setq-locally tab-width 4))
     (add-hook 'sql-mode-hook #'eglot-ensure))
 
+(use-package ghcid-mode)
+
 (use-package haskell-mode
     :init
     (when (executable-find "haskell-language-server")
-        (add-hook 'haskell-mode-hook 'eglot-ensure)))
+        (add-hook 'haskell-mode-hook 'eglot-ensure))
+     (add-hook 'haskell-mode-hook #'ghcid))
 
 (use-package nix-mode
     :init

@@ -113,5 +113,8 @@
  ("ws-butler" . "e3a38d93e01014cd47bf5af4924459bd145fd7c4")
  ("xclip" . "2dfa5fa1754470253fc106b8bd55d9b2bd6702fe")
  ("xref" . "5d708092fd70864ae898628b0ba2aa850886566f")
+ ("haskell-mode" . "5ae350d97f6e4adb5360ea26ccf8f28ac54d855c")
+ ("nix-mode" . "719feb7868fb567ecfe5578f6119892c771ac5e5")
+ ("ghcid-mode" . "b8b4a084c27ce96d1b4bf5b8b6053a9d97c76b4a")
  ("yasnippet" . "76e1eee654ea9479ba1441f9c17567694e6a2096"))
 :gamma
