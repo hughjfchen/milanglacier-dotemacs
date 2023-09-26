@@ -195,7 +195,7 @@
     :init
     (when (executable-find "haskell-language-server")
         (add-hook 'haskell-mode-hook 'eglot-ensure))
-     (add-hook 'haskell-mode-hook #'ghcid))
+     (add-hook 'haskell-mode-hook #'ghcid-mode))
 
 (use-package nix-mode
     :init
