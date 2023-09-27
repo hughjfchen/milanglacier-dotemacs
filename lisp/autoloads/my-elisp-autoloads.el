@@ -148,5 +148,36 @@ library/userland functions"
                                 (throw 'matcher t)))))))
         nil))
 
+;;; Following added by Hugh JF Chen
+
+;;;###autoload
+(defun my/reload-dir-locals-for-current-buffer ()
+  "reload dir locals for the current buffer"
+  (interactive)
+  (let ((enable-local-variables :all))
+    (hack-dir-local-variables-non-file-buffer)))
+
+;;;###autoload
+(defun my/reload-dir-locals-for-all-buffer-in-this-directory ()
+  "For every buffer with the same `default-directory` as the
+current buffer's, reload dir-locals."
+  (interactive)
+  (let ((dir default-directory))
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+          (let ((bufdir default-directory))
+              (when (or (equal bufdir dir)
+                        (f-ancestor-of-p dir bufdir))
+                  (my/reload-dir-locals-for-current-buffer)))))))
+
+;;;###autoload
+(defun my/enable-autoreload-for-dir-locals ()
+    (when (and (buffer-file-name)
+               (equal dir-locals-file
+                      (file-name-nondirectory (buffer-file-name))))
+        (add-hook 'after-save-hook
+                  'my/reload-dir-locals-for-all-buffer-in-this-directory
+                  nil t)))
+
 (provide 'my-elisp-autoloads)
 ;; my-elisp-autoloads.el ends here

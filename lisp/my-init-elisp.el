@@ -34,6 +34,7 @@
 (use-package elisp-mode
     :init
     (add-hook 'emacs-lisp-mode-hook #'my/elisp-setup)
+    (add-hook 'lisp-data-mode-hook #'my/enable-autoreload-for-dir-locals)
 
     :config
     (my/define-and-bind-local-paren-text-object "`" "`" "'" emacs-lisp-mode-hook)

@@ -185,6 +185,12 @@ Indents plists more sensibly. Adapted from
 https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 
 (fn INDENT-POINT STATE)")
+(autoload 'my/reload-dir-locals-for-current-buffer "my-elisp-autoloads" "\
+reload dir locals for the current buffer" t)
+(autoload 'my/reload-dir-locals-for-all-buffer-in-this-directory "my-elisp-autoloads" "\
+For every buffer with the same `default-directory` as the
+current buffer's, reload dir-locals." t)
+(autoload 'my/enable-autoreload-for-dir-locals "my-elisp-autoloads")
 (register-definition-prefixes "my-elisp-autoloads" '("my&emacs-lisp--face" "my/emacs-lisp-outline-level" "my:emacs-lisp-highlight-vars-and-faces"))
 
 
