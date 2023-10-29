@@ -11,8 +11,10 @@
 
 ;; haskell
 (straight-use-package 'haskell-mode)
-(straight-use-package '(ghcid-mode :host github :repo "hughjfchen/ghcid-mode"
-                                :files (:defaults "*.el")))
+(straight-use-package 'dante)
+(straight-use-package 'attrap)
+;; (straight-use-package '(ghcid-mode :host github :repo "hughjfchen/ghcid-mode"
+;;                                 :files (:defaults "*.el")))
 
 ;; nix
 (straight-use-package 'nix-mode)
@@ -189,13 +191,54 @@
     (add-hook 'sql-mode-hook (my/setq-locally tab-width 4))
     (add-hook 'sql-mode-hook #'eglot-ensure))
 
-(use-package ghcid-mode)
+;; (use-package ghcid-mode)
+
+;; (use-package haskell-mode
+;;    :init
+;;     (when (executable-find "haskell-language-server")
+;;        (add-hook 'haskell-mode-hook 'eglot-ensure))
+;;     (add-hook 'haskell-mode-hook #'ghcid-mode))
 
 (use-package haskell-mode
     :init
-    (when (executable-find "haskell-language-server")
-        (add-hook 'haskell-mode-hook 'eglot-ensure))
-     (add-hook 'haskell-mode-hook #'ghcid-mode))
+    )
+
+(use-package flymake-mode
+    :bind (("C-c e n" . flymake-goto-next-error)
+           ("C-c e p" . flymake-goto-prev-error)))
+
+(use-package dante
+  ;;:ensure t ; ask use-package to install the package
+  :after haskell-mode
+  :commands 'dante-mode
+  :init
+  ;; flycheck backend deprecated October 2022
+  ;; (add-hook 'haskell-mode-hook 'flycheck-mode)
+  (add-hook 'haskell-mode-hook 'flymake-mode)
+  (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
+  (add-hook 'haskell-mode-hook 'dante-mode)
+  (add-hook 'haskell-mode-hook
+            (defun my-fix-hs-eldoc ()
+              (setq eldoc-documentation-strategy #'eldoc-documentation-default)))
+  :config
+  ;;(require 'flymake-flycheck)
+  ;;(defalias 'flymake-hlint
+  ;;  (flymake-flycheck-diagnostic-function-for 'haskell-hlint))
+  ;;(add-to-list 'flymake-diagnostic-functions 'flymake-hlint)
+  ;; flycheck backend deprecated October 2022
+  ;; (flycheck-add-next-checker 'haskell-dante '(info . haskell-hlint))
+  :bind (("C-c d r" . dante-restart)
+         ("C-c d d" . dante-diagnose))) ;; use any binding of your choice
+
+(use-package attrap
+    :init
+    (add-hook 'haskell-mode-hook
+          (defun my/attrap-haskell-hook ()
+            (require 'attrap)
+            ;;(require 'flymake-flycheck)
+            ;;(flymake-mode)
+            (add-hook 'flymake-diagnostic-functions 'attrap-flymake-hlint nil t)))
+  :bind (("C-c /" . attrap-attrap))) ;; use any binding of your choice
 
 (use-package nix-mode
     :init
