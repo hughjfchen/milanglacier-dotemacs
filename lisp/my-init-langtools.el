@@ -80,7 +80,8 @@
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
                    (window-height . 0.4)
-                   (slot . ,(alist-get 'eldoc my/side-window-slots))))
+                   (slot . ,(alist-get 'eldoc my/side-window-slots))
+                   (side . ,(alist-get 'eldoc my/side-window-sides))))
     ;; the major mode of eldoc buffer is special-mode.
     (general-define-key
      :states '(normal motion)

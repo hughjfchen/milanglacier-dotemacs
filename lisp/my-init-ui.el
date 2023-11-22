@@ -53,7 +53,7 @@ if they are side window.")
 (defvar my/side-window-sides
     '((helpful . bottom) ;;bottom is the default
       (vterm . bottom)
-      (eldoc . bottom)
+      (eldoc . right)
       (aichat . bottom)
       (python . bottom)
       (R . bottom)
