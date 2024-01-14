@@ -4,10 +4,10 @@
 (straight-use-package 'eglot)
 (straight-use-package 'consult-eglot)
 (straight-use-package 'edit-indirect)
-(straight-use-package '(copilot :host github :repo "zerolfx/copilot.el"
-                                :files ("dist" "*.el")))
+(straight-use-package '(codeium :type git :host github :repo "Exafunction/codeium.el"))
 (straight-use-package 'code-cells)
 (straight-use-package 'reformatter)
+(straight-use-package '(dape :host github :repo "svaante/dape"))
 
 (use-package citre
     :init
@@ -93,8 +93,13 @@
     :init
     (setq eglot-stay-out-of '(company)
           eglot-workspace-configuration
-          '(:pyright (:useLibraryCodeForTypes t :openFilesOnly :json-false)
-            :r (:lsp (:diagnostics :json-false)))
+          '(:python.analysis (:useLibraryCodeForTypes t :diagnosticMode "workspace" :autoSearchPaths t)
+            ;; NOTE: I was thinking `python.analysis' should be a
+            ;; hierarchical structure like { "python": { "analysis": {
+            ;; xxx } }.  But examining the `eglot-event' buffer
+            ;; suggests me that `python.analysis' should be a whole
+            ;; component.
+            :r (:lsp (:diagnostics t)))
           read-process-output-max (* 1024 1024)
           eglot-sync-connect 0)
 
@@ -128,18 +133,18 @@
         :prefix-map 'my/lsp-map)
 
     (my/lsp-map
-        :keymaps 'eglot-mode-map
-        :states '(normal insert motion visual)
-        "" '(:ignore t :which-key "lsp")
-        "f" #'my~formatter
-        "s" #'consult-eglot-symbols
-        "a" #'eglot-code-actions
-        "e" #'consult-flymake
-        "n" #'eglot-rename
-        "t" #'eglot-find-typeDefinition
-        "i" #'eglot-find-implementation
-        "[" #'xref-go-back
-        "]" #'xref-go-forward)
+     :keymaps 'eglot-mode-map
+     :states '(normal insert motion visual)
+     "" '(:ignore t :which-key "lsp")
+     "f" #'my~formatter
+     "s" #'consult-eglot-symbols
+     "a" #'eglot-code-actions
+     "e" #'consult-flymake
+     "n" #'eglot-rename
+     "t" #'eglot-find-typeDefinition
+     "i" #'eglot-find-implementation
+     "[" #'xref-go-back
+     "]" #'xref-go-forward)
 
     (general-define-key
      :keymaps 'eglot-mode-map
@@ -173,25 +178,34 @@
      :keymaps 'comint-mode-map
      "C-a" #'comint-bol))
 
-(use-package copilot
+(use-package codeium
     :init
-    (my/toggle-map
-        :keymaps 'override
-        :states '(normal insert motion)
-        "g" #'copilot-mode)
+    ;; NEXT: I need to determine how to properly configure
+    ;; `codeium-completion-at-point' as a regular
+    ;; `completion-at-point' function that integrates with other
+    ;; completion sources, such as `citre-completion-at-point' and
+    ;; `eglot-completion-at-point'.
 
-    :config
-    (add-to-list 'copilot-disable-display-predicates #'company--active-p)
+    ;; There are two issues to address:
 
+    ;; 1. It is not possible to place other company backends, such as
+    ;; `company-yasnippet', before `company-capf'. Using (setq
+    ;; company-backedns '((company-yasnippet company-capf))) as an
+    ;; example will not work in this case. Consequently, when inside a
+    ;; function body, company will only provide candidates from
+    ;; `company-yasnippet'.
+
+    ;; 2. When attempting to use `cape-capf-super' to combine
+    ;; `eglot-completion-at-point' and `codeium-completion-at-point',
+    ;; only the candidates from the first capf will be displayed, and
+    ;; the candidates from the second capf will never appear.
+
+    ;; Currently, I can only use `codeium-completion-at-point' as an
+    ;; interactive command in the minibuffer.
     (general-define-key
-     :states '(insert)
-     :keymaps 'copilot-mode-map
-     "M-y" #'copilot-accept-completion-by-line
-     "M-Y" #'copilot-accept-completion
-     "M-J" #'copilot-next-completion
-     "M-K" #'copilot-previous-completion
-     "M->" #'copilot-next-completion
-     "M-<" #'copilot-previous-completion))
+     :states 'insert
+     "M-y" #'my~codeium-completion)
+    )
 
 (use-package treesit
     :init
@@ -221,7 +235,7 @@
             (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "tsx/src"))
             (ruby . ("https://github.com/tree-sitter/tree-sitter-ruby"))
             (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
-            (sql . ("https://github.com/m-novikov/tree-sitter-sql"))
+            (sql . ("https://github.com/derekstride/tree-sitter-sql" "gh-pages"))
             (vue . ("https://github.com/merico-dev/tree-sitter-vue"))
             (yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
             (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
@@ -252,6 +266,49 @@
 
     )
 
+(use-package dape
+    :commands (dape dape-toggle-breakpoint)
+
+    :init
+    (setq dape-repl-use-shorthand t)
+    (add-hook 'python-ts-mode-hook #'my:dape-keymap-setup)
+    (add-hook 'go-ts-mode-hook #'my:dape-keymap-setup)
+
+    :config
+    (my/leader
+        :keymaps 'override
+        :states '(normal insert visual)
+        "d" '(:keymap dape-global-map :which-key "DAP"))
+
+    (general-define-key
+     :keymaps 'dape-info-mode-map
+     :states 'normal
+     "RET" #'dape-info-buton-press-dwim
+     "TAB" #'dape-info-tree-dwim
+     "za" #'dape-info-tree-dwim)
+
+    (add-to-list 'dape-configs
+                 '(delve
+                   modes (go-mode go-ts-mode)
+                   command "dlv"
+                   command-args ("dap" "--listen" "127.0.0.1:55878")
+                   command-cwd dape-cwd-fn
+                   host "127.0.0.1"
+                   port 55878
+                   :type "debug"
+                   :request "launch"
+                   :cwd dape-cwd-fn
+                   :program dape-cwd-fn))
+
+    (add-to-list 'dape-configs
+                 '(debugpy
+                   modes (python-ts-mode python-mode)
+                   command "python3"
+                   command-args ("-m" "debugpy.adapter")
+                   :type "executable"
+                   :request "launch"
+                   :cwd dape-cwd-fn
+                   :program dape-find-file-buffer-default)))
 
 (provide 'my-init-langtools)
 ;;; my-init-langtools.el ends here

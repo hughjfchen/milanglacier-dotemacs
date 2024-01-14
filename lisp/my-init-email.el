@@ -36,12 +36,15 @@
           mu4e-sent-messages-behavior 'delete
           ;; outlook automatically save the sent messages, should directly delete it
           mu4e-compose-format-flowed t
+          mu4e-maildir-initial-input "" ;; the default is "/", which causes some dirs cannot be completed
           mu4e-hide-index-messages t
           mu4e-completing-read-function #'completing-read
           mu4e-confirm-quit nil
-          mu4e-attachment-dir (expand-file-name "Downloads" (getenv "HOME")))
+          mu4e-attachment-dir (expand-file-name "Downloads/" (getenv "HOME")))
 
     :config
+
+    (my~mu4e-thread-folding-mode)
 
     (add-hook 'mu4e-compose-mode-hook (my/setq-locally fill-column 72))
     (add-hook 'mu4e-headers-mode-hook (my/turn-off-mode display-line-numbers-mode))
@@ -88,7 +91,7 @@
     (setq mu4e-view-actions
           '(("capture message" . mu4e-action-capture-message)
             ("view in browser" . mu4e-action-view-in-browser)
-            ("xview in xwidget" . mu4e-action-view-in-xwidget)
+            ("xview in xwidget" . my:mu4e-action-view-in-xwidget)
             ("eview in eww" . my:mu4e-open-link-via-eww)
             ("show this thread" . mu4e-action-show-thread)
             ("mailbox patch apply (git am)" . mu4e-action-git-apply-mbox)
@@ -121,24 +124,7 @@
              :key ?g))
           )
 
-    ;; evil-collection used the `mu4e~main-toggle-mail-sending-mode'
-    ;; command which is obsolete.
-    (defalias #'mu4e~main-toggle-mail-sending-mode #'mu4e--main-toggle-mail-sending-mode)
-
     (plist-put (cdr (assoc :flags mu4e-header-info)) :shortname " Flags") ; default=Flgs
-
-    ;; Due to evil, none of the marking commands work when
-    ;; making a visual selection in the headers view of
-    ;; mu4e. Without overriding any evil commands we may
-    ;; actually want to use in and evil selection, this can be
-    ;; easily fixed.
-    (general-define-key
-     :states 'visual
-     :keymaps 'mu4e-headers-mode-map
-     "*" #'mu4e-headers-mark-for-something
-     "!" #'mu4e-headers-mark-for-read
-     "?" #'mu4e-headers-mark-for-unread
-     "u" #'mu4e-headers-mark-for-unmark)
 
     (general-define-key
      :states '(normal motion)
@@ -151,6 +137,20 @@
     (general-define-key
      :states '(normal motion)
      :keymaps 'mu4e-view-mode-map
+     "M-RET" #'mu4e--view-browse-url-from-binding)
+
+    (general-define-key
+     :states '(normal motion)
+     :keymaps 'mu4e-headers-mode-map
+     "za" #'my~mu4e-toggle-thread-folding-at-point
+     "zc" #'my~mu4e-fold-thread-at-point
+     "zo" #'my~mu4e-unfold-thread-at-point
+     "zm" #'my~mu4e-fold-all-threads
+     "zr" #'my~mu4e-unfold-all-threads)
+
+    (general-define-key
+     :states '(normal motion)
+     :keymaps 'mu4e-view-mode-map
      "] t" #'my~mu4e-view-thread-forward
      "[ t" #'my~mu4e-view-thread-backward)
 
@@ -159,6 +159,7 @@
     (general-define-key :keymaps 'shr-map "a" nil)
     (general-define-key :keymaps 'shr-image-map "a" nil)
 
+    (add-hook 'mu4e-compose-mode-hook (my/turn-off-mode diff-hl-mode))
     )
 
 (use-package org-msg
@@ -176,7 +177,13 @@
           org-msg-attached-file-reference
           "see[ \t\n]\\(?:the[ \t\n]\\)?\\(?:\\w+[ \t\n]\\)\\{0,3\\}\\(?:attached\\|enclosed\\)\\|\
 (\\(?:attached\\|enclosed\\))\\|\
-\\(?:attached\\|enclosed\\)[ \t\n]\\(?:for\\|is\\)[ \t\n]"))
+\\(?:attached\\|enclosed\\)[ \t\n]\\(?:for\\|is\\)[ \t\n]")
+
+    (add-to-list 'my$function-predicate-blocklist
+                 '(eglot-ensure (derived-mode-p 'org-msg-edit-mode)))
+
+    :config
+    (add-hook 'org-msg-edit-mode-hook (my/turn-off-mode diff-hl-mode)))
 
 (provide 'my-init-email)
 ;;; my-init-email.el.el ends here

@@ -61,17 +61,18 @@ code block)"
     (pcase (markdown-code-block-lang)
         ("r" (call-interactively #'run-ess-r))
         ("R" (call-interactively #'run-ess-r))
-        ("python" (call-interactively #'my/run-python))
+        ("python" (call-interactively #'my~ipython-start))
         (x "No associated REPL found!")))
 
 ;;;###autoload (autoload #'my/markdown-send-region "my-langs-autoloads" nil t)
-(evil-define-operator my/markdown-send-region (beg end)
+(evil-define-operator my/markdown-send-region (beg end session)
     "Send region to the REPL depending on the context (i.e. the
 language of the code block)"
+    (interactive "<r>P")
     (pcase (markdown-code-block-lang)
         ("r" (my/send-region-to-ess beg end))
         ("R" (my/send-region-to-ess beg end))
-        ("python" (my/send-region-to-python beg end))
+        ("python" (my~ipython-send-region-operator beg end session))
         (x "No associated REPL found!")))
 
 (defvar my$conda-current-env nil
@@ -103,6 +104,7 @@ language of the code block)"
                 (setenv "PATH" (concat path ":" (getenv "PATH")))
                 (setenv "CONDA_PREFIX" conda-current-env)
                 (setenv "CONDA_DEFAULT_ENV" (file-name-nondirectory conda-current-env))
+                (setenv "CONDA_PROMPT_MODIFIER" (concat "(" (file-name-nondirectory conda-current-env) ") "))
                 (setenv "CONDA_SHLVL" "1")
                 (message "Activating conda environment: %s" path))
         (message "conda not found")))
@@ -123,6 +125,7 @@ language of the code block)"
                 (setenv "CONDA_PREFIX" nil)
                 (setenv "CONDA_DEFAULT_ENV" nil)
                 (setenv "CONDA_SHLVL" "0")
+                (setenv "CONDA_PROMPT_MODIFIER" nil)
                 (message "Conda environment deactivated."))
         (message "conda not found")))
 
@@ -171,6 +174,11 @@ language of the code block)"
 
 ;;;###autoload (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
 (reformatter-define yapf-format :program "yapf")
+
+;;;###autoload (autoload #'black-format-buffer "my-langs-autoloads" nil t)
+(reformatter-define black-format
+    :program "black"
+    :args '("--quiet" "-"))
 
 ;;;###autoload (autoload #'sql-formatter-format-buffer "my-langs-autoloads" nil t)
 (reformatter-define sql-formatter-format

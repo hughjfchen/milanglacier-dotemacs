@@ -37,9 +37,6 @@
                      '((company-files company-yasnippet company-capf :separate company-dabbrev)))
 
     :config
-    (add-hook 'company-mode-hook #'evil-normalize-keymaps)
-    (evil-make-overriding-map company-mode-map)
-    (evil-make-overriding-map company-active-map)
 
     (setq company-text-icons-mapping
           '((array "" font-lock-type-face)
@@ -72,17 +69,19 @@
             (variable "󰀫" font-lock-variable-name-face)
             (t "" shadow)))
 
+    (with-eval-after-load 'company-files
+        ;; Fix `company-files' completion for org file:* links
+        (add-to-list 'company-files--regexps "file:\\(\\(?:\\.\\{1,2\\}/\\|~/\\|/\\)[^\]\n]*\\)"))
+
     (unless (display-graphic-p)
         ;; Don't persist company popups when switching back to normal mode.
         ;; `company-box' aborts on mode switch so it doesn't need this.
         (add-hook 'evil-normal-state-entry-hook #'my/company-abort))
 
-    (with-eval-after-load 'company-files
-        ;; Fix `company-files' completion for org file:* links
-        (add-to-list 'company-files--regexps "file:\\(\\(?:\\.\\{1,2\\}/\\|~/\\|/\\)[^\]\n]*\\)"))
-
     (when (display-graphic-p)
         (add-hook 'company-mode-hook #'company-box-mode))
+
+    (add-hook 'company-mode-hook #'evil-normalize-keymaps)
 
     (general-define-key
      :keymaps 'company-active-map
@@ -92,10 +91,10 @@
      "C-y" #'company-complete-selection)
 
     (general-define-key
-     :keymaps
-     'company-mode-map
+     :keymaps 'company-mode-map
+     :states '(insert emacs)
      ;; manually invoke the completion
-     "M-i" #'company-complete)
+     "M-i" #'company-manual-begin)
 
     (advice-add #'company-capf :around #'my/company-completion-styles)
 

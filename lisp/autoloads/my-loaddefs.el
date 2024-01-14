@@ -131,15 +131,9 @@ otherwise use the existed one
 
 (fn &optional NEW-SESSION)" t)
 (autoload 'my:pdf-midnight-mode-maybe "my-apps-autoloads")
-(autoload 'my~aichat-start "my-apps-autoloads" "\
-Create a aichat(URL `https://github.com/sigoden/aichat') REPL
-buffer.  Start a new aichat session or switch to an already active
-session. Return the buffer selected (or created). With a numeric
-prefix arg, create or switch to the session with that number as a
-suffix.
-
-(fn &optional ARG)" t)
-(register-definition-prefixes "my-apps-autoloads" '("my/" "my~aichat-send-region"))
+ (autoload #'my~aichat-start "my-apps-autoloads" nil t)
+ (autoload #'my~ipython-start "my-apps-autoloads" nil t)
+(register-definition-prefixes "my-apps-autoloads" '("my%create-vterm-repl-schema" "my/"))
 
 
 ;;; Generated autoloads from my-colorscheme-autoloads.el
@@ -212,8 +206,35 @@ current buffer's, reload dir-locals." t)
 If point is on a link, open this link via `eww'. Otherwise open
 this email via `eww'
 
-(fn MSG &optional ARG)")
-(register-definition-prefixes "my-email-autoloads" '("my:mu4e-" "my~mu4e-"))
+(fn MSG)")
+(defvar my~mu4e-thread-folding-mode nil "\
+Non-nil if My~Mu4e-Thread-Folding mode is enabled.
+See the `my~mu4e-thread-folding-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `my~mu4e-thread-folding-mode'.")
+(custom-autoload 'my~mu4e-thread-folding-mode "my-email-autoloads" nil)
+(autoload 'my~mu4e-thread-folding-mode "my-email-autoloads" "\
+Enable thread folding for mu4e.
+
+This is a global minor mode.  If called interactively, toggle the
+`My~Mu4e-Thread-Folding mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable
+the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='my~mu4e-thread-folding-mode)'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
+
+(fn &optional ARG)" t)
+(register-definition-prefixes "my-email-autoloads" '("my$mu4e-" "my:mu4e-" "my~mu4e-"))
 
 
 ;;; Generated autoloads from my-evil-autoloads.el
@@ -273,6 +294,7 @@ This command activates a python virtual environment.
 (autoload 'my~python-venv-deactivate "my-langs-autoloads" "\
 This command deactivates the current python virtual environment." t)
  (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
+ (autoload #'black-format-buffer "my-langs-autoloads" nil t)
  (autoload #'sql-formatter-format-buffer "my-langs-autoloads" nil t)
 (register-definition-prefixes "my-langs-autoloads" '("my$" "my/"))
 
@@ -280,6 +302,7 @@ This command deactivates the current python virtual environment." t)
 ;;; Generated autoloads from my-langtools-autoloads.el
 
 (autoload 'my/toggle-citre-eglot-capf "my-langtools-autoloads")
+ (autoload #'my~codeium-completion "my-langtools-autoloads" nil t)
  (autoload #'my/eldoc-buffer-dwim "my-langtools-autoloads" nil t)
 (autoload 'my/xref-move-in-original-src-macro "my-langtools-autoloads" "\
 There can only be one xref buffer. That is, if you find
@@ -302,6 +325,9 @@ Support LANG in org source code block.
 (autoload 'my~formatter "my-langtools-autoloads" "\
 If current LSP has a formatter, use it. Otherwise, use the
 reformatter according to the `major-mode-reformatter-plist'" t)
+(autoload 'my~dape-start-or-continue "my-langtools-autoloads" "\
+If there is an active DAPE session, run `dape-continue', otherwise run `dape'." t)
+(autoload 'my:dape-keymap-setup "my-langtools-autoloads")
 (register-definition-prefixes "my-langtools-autoloads" '("major-mode-reformatter-plist" "my/eldoc-"))
 
 
@@ -474,7 +500,7 @@ for debugging purposes when you want to examine a hook value.
 (fn HOOK VAR VAL)" nil t)
 (autoload 'my:load-packages-incrementally-setup "my-utils-autoloads" "\
 Set up a idle timer to start idly load packages.")
-(register-definition-prefixes "my-utils-autoloads" '("my$load-incrementally-packages" "my:load-packages-incrementally"))
+(register-definition-prefixes "my-utils-autoloads" '("my$" "my%call-func-respect-blocklist" "my:load-packages-incrementally"))
 
 
 ;;; Generated autoloads from my-vcs-autoloads.el

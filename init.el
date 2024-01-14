@@ -80,6 +80,10 @@
 (require 'my-init-email)
 (require 'my-misc)
 
+;; I personally HATE custom.el. But I don't think I have a better
+;; place to store the API key for codeium.
+(load custom-file)
+
 (setq debug-on-error nil)
 
 ;; after started up, reset GC threshold to normal.

@@ -1,7 +1,7 @@
 ;;; my-langtools-autoloads.el -*- lexical-binding: t; -*-
 
 (defalias #'my/eglot-citre-capf
-    (cape-super-capf #'eglot-completion-at-point #'citre-completion-at-point))
+    (cape-capf-super #'eglot-completion-at-point #'citre-completion-at-point))
 
 ;;;###autoload
 (defun my/toggle-citre-eglot-capf ()
@@ -9,6 +9,12 @@
             (add-to-list 'completion-at-point-functions #'my/eglot-citre-capf)
         (setq-local completion-at-point-functions
                     (delq #'my/eglot-citre-capf completion-at-point-functions))))
+
+;;;###autoload (autoload #'my~codeium-completion "my-langtools-autoloads" nil t)
+(defalias #'my~codeium-completion (cape-capf-interactive #'codeium-completion-at-point)
+    "An interactive command that shows completion candidates from
+Codeium in minibuffer, from which you can select one and insert it
+into the buffer.")
 
 (defun my/eldoc-buffer-dwim-fallback ()
     "When eldoc buffer window is not opened, display the eldoc
@@ -97,8 +103,8 @@ be associated with a real file."
     (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
 
 (defvar major-mode-reformatter-plist
-    '(python-ts-mode yapf-format-buffer
-                     python-mode yapf-format-buffer
+    '(python-ts-mode black-format-buffer
+                     python-mode black-format-buffer
                      sql-mode sql-formatter-format-buffer)
     "A plist of major modes and their corresponding reformatters.")
 
@@ -112,6 +118,30 @@ reformatter according to the `major-mode-reformatter-plist'"
             (call-interactively #'eglot-format)
         (when-let ((formatter (plist-get major-mode-reformatter-plist major-mode)))
             (call-interactively formatter))))
+
+;;;###autoload
+(defun my~dape-start-or-continue ()
+    "If there is an active DAPE session, run `dape-continue', otherwise run `dape'."
+    (interactive)
+    (require 'dape)
+    (if (and (dape--stopped-threads)
+             (dape--live-process t))
+            (call-interactively #'dape-continue)
+        (call-interactively #'dape)))
+
+;;;###autoload
+(defun my:dape-keymap-setup ()
+    (general-define-key
+     :keymaps 'local
+     "<f5>" #'my~dape-start-or-continue
+     "<S-f5>" #'dape-quit
+     "<f6>" #'dape-pause
+     "<f9>" #'dape-toggle-breakpoint
+     "<S-f9>" #'dape-expression-breakpoint
+     "<f10>" #'dape-next ;; step-over
+     "<f11>" #'dape-step-in
+     "<S-f11>" #'dape-step-out)
+    )
 
 (provide 'my-langtools-autoloads)
 ;;; my-langtools-autoloads.el ends here
