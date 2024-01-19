@@ -202,5 +202,13 @@
     :init
     (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode)))
 
+(use-package bash-ts-mode
+    :bind (("C-c C-e" . flymake-goto-next-error))
+    :hook (bash-ts-mode . flymake-mode))
+
+(use-package sh-mode
+    :bind (("C-c C-e" . flymake-goto-next-error))
+    :hook (sh-mode . flymake-mode))
+
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
