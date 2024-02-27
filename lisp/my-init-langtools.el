@@ -116,6 +116,8 @@
 
     (add-to-list 'eglot-server-programs '((org-mode markdown-mode) "efm-langserver"))
 
+    (add-to-list 'eglot-server-programs '(nix-mode . ("nil")))
+
     (add-hook
      'eglot-managed-mode-hook #'my/toggle-citre-eglot-capf)
 

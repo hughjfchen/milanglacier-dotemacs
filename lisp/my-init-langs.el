@@ -200,7 +200,9 @@
 
 (use-package nix-mode
     :init
-    (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode)))
+    (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
+    :config
+    (add-hook 'nix-mode-hook 'eglot-ensure))
 
 (use-package bash-ts-mode
     :bind (("C-c C-e" . flymake-goto-next-error))
