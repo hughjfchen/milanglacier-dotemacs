@@ -117,5 +117,6 @@
  ("yasnippet" . "d7f55c7501a67a27f45154a6d4bdc50c2c235623")
  ("haskell-mode" . "8d0f44bfe2a9ab6b0969c9bafb75089f315ff5ae")
  ("nix-mode" . "719feb7868fb567ecfe5578f6119892c771ac5e5")
- ("ghcid-mode" . "7d7a649f3027ad64a93aca7eafff3efbed654a9a"))
+ ("ghcid-mode" . "7d7a649f3027ad64a93aca7eafff3efbed654a9a")
+ ("ox-pandoc" . "399d787b6e2124bd782615338b845c3724a47718"))
 :gamma

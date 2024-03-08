@@ -8,6 +8,9 @@
 (straight-use-package 'ox-clip)
 (straight-use-package 'org-download)
 
+;; I need to convert org to M$ format with pandoc
+(straight-use-package 'ox-pandoc)
+
 ;;(defvar my$jupyter-want-integration t
 ;;    "Enable jupyter integration. which entails configuring it as an
 ;;org-babel backend and allowing for direct editing of Jupyter notebooks
@@ -545,6 +548,9 @@
           (if IS-MAC
                   "screencapture -i %s"
               org-download-screenshot-method)))
+
+;; to customize the pandoc exportor
+(use-package ox-pandoc)
 
 (provide 'my-init-org)
 ;;; my-init-org.el ends here
