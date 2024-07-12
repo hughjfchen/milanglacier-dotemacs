@@ -8,6 +8,9 @@
 (straight-use-package 'ox-clip)
 (straight-use-package 'org-download)
 
+;; for charting
+(straight-use-package 'plantuml-mode)
+
 ;; I need to convert org to M$ format with pandoc
 (straight-use-package 'ox-pandoc)
 
@@ -82,7 +85,9 @@
           org-todo-keywords '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)"
                                         "|" "DONE(d)" "KILL(k)"))
           ;; don't load those org modules that I never use
-          org-modules '(ol-doi ol-bbdb ol-bibtex ol-info ol-eww))
+          org-modules '(ol-doi ol-bbdb ol-bibtex ol-info ol-eww)
+          ;; for charting
+          org-plantuml-jar-path (expand-file-name "~/.local/share/java/plantuml/plantuml.jar"))
 
     ;; copied from doomemacs
     (setq org-refile-targets
@@ -423,6 +428,7 @@
     :config
     (add-to-list 'org-src-lang-modes '("r" . R))
     (add-to-list 'org-src-lang-modes '("python" . python-ts))
+    (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
     (setf (alist-get "bash" org-src-lang-modes) 'bash-ts)
     (setf (alist-get "sh" org-src-lang-modes) 'bash-ts)
 
@@ -435,6 +441,7 @@
                              (R . t)
                              (emacs-lisp . t)
                              (shell . t)
+                             (plantuml . t)
                              (python . t))))
 
         ;;(when my$jupyter-want-integration

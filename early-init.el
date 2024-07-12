@@ -9,7 +9,7 @@
 (setq inhibit-startup-message t)
 
 ;; set the initial windows size
-(setq initial-frame-alist '((width . 120)
+(setq initial-frame-alist '((width . 125)
                             (height . 50)))
 
 ;; no menu bar, toolbar, scroll bar
