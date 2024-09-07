@@ -14,7 +14,7 @@
 ;; I need to convert org to M$ format with pandoc
 (straight-use-package 'ox-pandoc)
 
-;;(defvar my$jupyter-want-integration t
+;(defvar my$jupyter-want-integration t
 ;;    "Enable jupyter integration. which entails configuring it as an
 ;;org-babel backend and allowing for direct editing of Jupyter notebooks
 ;;within Emacs.")
@@ -558,6 +558,17 @@
 
 ;; to customize the pandoc exportor
 (use-package ox-pandoc)
+
+;;; I want to use the enhanced version of ox-odt
+(use-package ox-odt
+    :straight (org-mode-ox-odt
+               :host github
+               :repo "kjambunathan/org-mode-ox-odt"
+               :files ("lisp/ox-odt.el"
+                       "lisp/odt.el"
+                       "etc"
+                       "docs"
+                       "contrib/odt/LibreOffice")))
 
 (provide 'my-init-org)
 ;;; my-init-org.el ends here

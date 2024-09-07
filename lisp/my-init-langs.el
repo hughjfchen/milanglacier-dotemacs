@@ -17,6 +17,9 @@
 ;; nix
 (straight-use-package 'nix-mode)
 
+;; robot-mode
+(straight-use-package 'robot-mode)
+
 (use-package ess
     :init
     (setq comint-scroll-to-bottom-on-input t
@@ -211,6 +214,10 @@
 (use-package sh-mode
     :bind (("C-c C-e" . flymake-goto-next-error))
     :hook (sh-mode . flymake-mode))
+
+(use-package robot-mode
+    :init
+    (add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode)))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
