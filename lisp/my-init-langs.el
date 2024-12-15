@@ -20,6 +20,9 @@
 ;; robot-mode
 (straight-use-package 'robot-mode)
 
+;; erlang-mode
+(straight-use-package 'erlang)
+
 (use-package ess
     :init
     (setq comint-scroll-to-bottom-on-input t
@@ -218,6 +221,13 @@
 (use-package robot-mode
     :init
     (add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode)))
+
+(use-package erlang
+    :init
+    (add-to-list 'auto-mode-alist '("\\.hrl\\'" . erlang-mode))
+    (add-to-list 'auto-mode-alist '("\\.erl\\'" . erlang-mode))
+    :config
+    (add-hook 'erlang-mode-hook 'eglot-ensure))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
