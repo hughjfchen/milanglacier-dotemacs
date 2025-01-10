@@ -11,6 +11,10 @@
 ;; for charting
 (straight-use-package 'plantuml-mode)
 
+;; for plotting
+;; (straight-use-package 'gnuplot-mode)
+(straight-use-package 'gnuplot)
+
 ;; I need to convert org to M$ format with pandoc
 (straight-use-package 'ox-pandoc)
 
@@ -429,6 +433,7 @@
     (add-to-list 'org-src-lang-modes '("r" . R))
     (add-to-list 'org-src-lang-modes '("python" . python-ts))
     (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+    (add-to-list 'org-src-lang-modes '("gnuplot" . gnuplot))
     (setf (alist-get "bash" org-src-lang-modes) 'bash-ts)
     (setf (alist-get "sh" org-src-lang-modes) 'bash-ts)
 
@@ -442,6 +447,7 @@
                              (emacs-lisp . t)
                              (shell . t)
                              (plantuml . t)
+                             (gnuplot . t)
                              (python . t))))
 
         ;;(when my$jupyter-want-integration
