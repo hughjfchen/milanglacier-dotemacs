@@ -10,6 +10,7 @@
 
 ;; for charting
 (straight-use-package 'plantuml-mode)
+(straight-use-package 'pikchr-mode)
 
 ;; for plotting
 ;; (straight-use-package 'gnuplot-mode)
@@ -434,6 +435,7 @@
     (add-to-list 'org-src-lang-modes '("python" . python-ts))
     (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
     (add-to-list 'org-src-lang-modes '("gnuplot" . gnuplot))
+    (add-to-list 'org-src-lang-modes '("pikchr" . pikchr))
     (setf (alist-get "bash" org-src-lang-modes) 'bash-ts)
     (setf (alist-get "sh" org-src-lang-modes) 'bash-ts)
 
@@ -448,6 +450,7 @@
                              (shell . t)
                              (plantuml . t)
                              (gnuplot . t)
+                             (pikchr . t)
                              (python . t))))
 
         ;;(when my$jupyter-want-integration
