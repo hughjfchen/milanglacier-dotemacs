@@ -92,7 +92,7 @@
           ;; don't load those org modules that I never use
           org-modules '(ol-doi ol-bbdb ol-bibtex ol-info ol-eww)
           ;; for charting
-          org-plantuml-jar-path (expand-file-name "~/.local/share/java/plantuml/plantuml.jar"))
+          org-plantuml-jar-path (expand-file-name "~/.nix-profile/lib/plantuml.jar"))
 
     ;; copied from doomemacs
     (setq org-refile-targets
