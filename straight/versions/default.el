@@ -113,7 +113,7 @@
  ("ws-butler" . "9ee5a7657a22e836618813c2e2b64a548d27d2ff")
  ("xclip" . "9ab22517f3f2044e1c8c19be263da9803fbca26a")
  ("xref" . "63b5875528e9c8dba3abbc76dae1b49351273c1c")
- ("yasnippet" . "2384fe1655c60e803521ba59a34c0a7e48a25d06"))
+ ("yasnippet" . "2384fe1655c60e803521ba59a34c0a7e48a25d06")
  ("haskell-mode" . "8d0f44bfe2a9ab6b0969c9bafb75089f315ff5ae")
  ("nix-mode" . "719feb7868fb567ecfe5578f6119892c771ac5e5")
  ("ghcid-mode" . "7d7a649f3027ad64a93aca7eafff3efbed654a9a")
