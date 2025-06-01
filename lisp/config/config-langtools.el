@@ -92,6 +92,7 @@
 
 (use-package eglot
     :init
+    (fset #'jsonrpc--log-event #'ignore)
     (setq eglot-stay-out-of '(company)
           eglot-autoshutdown t
           eglot-workspace-configuration
@@ -103,6 +104,7 @@
             ;; component.
             :r (:lsp (:diagnostics t)))
           read-process-output-max (* 1024 1024)
+          eglot-events-buffer-size 0
           eglot-sync-connect 0)
 
     :config
