@@ -19,3 +19,9 @@ tree-sitter/*
 eshell/*
 elpa/*
 codeium
+.ctags.d
+# citre stored temp configuration in this directory.
+lsp-bridge
+.aider*
+ELPA
+.env
