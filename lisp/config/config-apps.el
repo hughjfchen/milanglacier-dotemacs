@@ -9,7 +9,7 @@
 (use-package eww
     :init
     ;; use google as default engine to search keyword.
-    (setq eww-search-prefix "http://www.google.com/search?q=")
+    ;; (setq eww-search-prefix "http://www.google.com/search?q=")
 
     :config
     (mg-localleader
