@@ -167,7 +167,7 @@ otherwise use the existed one"
   :lighter " rdrview"
   (if eww-rdrview-mode
       (progn
-        (setq eww-retrieve-command '("rdrview" "-T" "title,sitename,body" "-H"))
+        (setq eww-retrieve-command '("rdrview" "-T" "title,sitename,url,body" "-H"))
         (add-hook 'eww-after-render-hook #'eww-rdrview-update-title))
     (progn
       (setq eww-retrieve-command nil)
@@ -178,7 +178,9 @@ otherwise use the existed one"
 It should be the title of the web page as returned by `rdrview'"
   (save-excursion
     (goto-char (point-min))
-    (plist-put eww-data :title (string-trim (thing-at-point 'line t))))
+    (plist-put eww-data :title (let ((theline (thing-at-point 'line t)))
+                                   (if (stringp theline) (string-trim (thing-at-point 'line t))
+                                       (format "%s" "My title")))))
   (eww--after-page-change))
 
 ;;;###autoload
