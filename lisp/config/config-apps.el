@@ -24,7 +24,8 @@
         :keymaps 'eww-mode-map
         "y" #'eww-copy-page-url
         ;; get the url of current visiting page
-        "g" #'mg-google-search-eww))
+        "g" #'mg-google-search-eww
+        "s" #'eww-rdrview-toggle-and-reload))
 
 (use-package xwidget
     :init

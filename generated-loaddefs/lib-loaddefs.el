@@ -129,7 +129,27 @@ otherwise use the existed one
 
 (fn &optional NEW-SESSION)" t)
 (autoload 'mg--pdf-midnight-mode-maybe "../lisp/lib/lib-apps")
-(register-definition-prefixes "../lisp/lib/lib-apps" '("mg-"))
+(autoload 'eww-rdrview-mode "../lisp/lib/lib-apps" "\
+Toggle whether to use `rdrview' to make eww buffers more readable.
+
+This is a minor mode.  If called interactively, toggle the `Eww-rdrview
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate the variable `eww-rdrview-mode'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+(fn &optional ARG)" t)
+(autoload 'eww-rdrview-toggle-and-reload "../lisp/lib/lib-apps" "\
+Toggle `eww-rdrview-mode' and reload page in current eww buffer." t)
+(register-definition-prefixes "../lisp/lib/lib-apps" '("eww-rdrview-update-title" "mg-"))
 
 
 ;;; Generated autoloads from ../lisp/lib/lib-colorscheme.el
@@ -177,6 +197,12 @@ Indents plists more sensibly. Adapted from
 https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 
 (fn INDENT-POINT STATE)")
+(autoload 'my/reload-dir-locals-for-current-buffer "../lisp/lib/lib-elisp" "\
+reload dir locals for the current buffer" t)
+(autoload 'my/reload-dir-locals-for-all-buffer-in-this-directory "../lisp/lib/lib-elisp" "\
+For every buffer with the same `default-directory` as the
+current buffer's, reload dir-locals." t)
+(autoload 'my/enable-autoreload-for-dir-locals "../lisp/lib/lib-elisp")
 (register-definition-prefixes "../lisp/lib/lib-elisp" '("mg-"))
 
 
@@ -360,7 +386,7 @@ toggle hide drawer. This function is effective only after org 9.6." t)
 Avoid loading Org Babel language definitions when no Jupyter kernelspec is available.
 `ob-jupyter' attempts to find a Jupyter kernel upon loading an
 Org-mode buffer.  If no kernelspec is found, this results in an error,
-which is both time-consuming and disruptive.  This function
+which is both time-consuming and annoying.  This function
 circumvents that by first verifying the availability of a kernelspec.
 Skip loading If none is found.
 
